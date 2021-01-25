@@ -10,16 +10,15 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.PageFactory;
 
 import com.qa.selenium.pom.demo.DemoHomePage;
 
 public class DemoSite {
 
-    private static RemoteWebDriver driver;
+    private static WebDriver driver;
     private static Logger LOGGER = Logger.getGlobal();
 
     @BeforeClass
@@ -80,7 +79,7 @@ public class DemoSite {
     public void tearDown() {
         LOGGER.warning("Closing webdriver instance!");
 
-        driver.close();
+        driver.quit();
 
         LOGGER.info("!!! Webdriver closed successfully !!!");
     }
