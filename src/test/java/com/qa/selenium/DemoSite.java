@@ -52,13 +52,13 @@ public class DemoSite {
             targ.click();
             
             // Fill details out
-        	targ.findElement(By.name("username"));
+            targ = driver.findElement(By.name("username"));
         	targ.sendKeys("root");
-        	targ.findElement(By.name("password"));
+        	targ = driver.findElement(By.name("password"));
         	targ.sendKeys("root");
         	
         	// Submit user
-        	targ.findElement(By.xpath("/html/body/table/tbody/tr/td[1]/form/div/center/table/tbody/tr/td[1]/div/center/table/tbody/tr[3]/td[2]/p/input"));
+        	targ = driver.findElement(By.xpath("/html/body/table/tbody/tr/td[1]/form/div/center/table/tbody/tr/td[1]/div/center/table/tbody/tr[3]/td[2]/p/input"));
         	targ.click();
 
         // STAGE 3 - Log in as created user.
@@ -68,20 +68,20 @@ public class DemoSite {
             targ = driver.findElement(By.xpath("/html/body/div/center/table/tbody/tr[2]/td/div/center/table/tbody/tr/td[2]/p/small/a[4]"));
             targ.click();
             
-        	targ.findElement(By.name("username"));
+            targ = driver.findElement(By.name("username"));
         	targ.sendKeys("root");
-        	targ.findElement(By.name("password"));
+        	targ = driver.findElement(By.name("password"));
         	targ.sendKeys("root");
         	
         	// Login user
-        	targ.findElement(By.xpath("/html/body/table/tbody/tr/td[1]/form/div/center/table/tbody/tr/td[1]/div/center/table/tbody/tr[3]/td[2]/p/input"));
+        	targ = driver.findElement(By.xpath("/html/body/table/tbody/tr/td[1]/form/div/center/table/tbody/tr/td[1]/table/tbody/tr[3]/td[2]/p/input"));
         	targ.click();
         	
         // STAGE 4 - check success.
         // ========================================
             LOGGER.info("Checking success of automated test...\n");
             
-            targ.findElement(By.xpath("/html/body/table/tbody/tr/td[1]/big/blockquote/blockquote/font/center/b"));
+            targ = driver.findElement(By.xpath("/html/body/table/tbody/tr/td[1]/big/blockquote/blockquote/font/center/b"));
 
             String status = targ.getText();
              
