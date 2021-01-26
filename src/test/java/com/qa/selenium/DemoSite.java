@@ -13,89 +13,57 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.PageFactory;
+
+import com.qa.selenium.webpages.demosite.DemoSiteHomePage;
+import com.qa.selenium.webpages.demosite.pages.DemoAddUsersPage;
 
 public class DemoSite {
 
-    private static WebDriver driver;
-    private static WebElement targ;
-    private static Logger LOGGER = Logger.getGlobal();
+	private static WebDriver driver;
+	private static WebElement targ;
+	private static Logger LOGGER = Logger.getGlobal();
 
-    @BeforeClass
-    public static void initialise(){
-    	
-        LOGGER.setLevel(Level.ALL);
-        
-        System.setProperty(
-        		"webdriver.chrome.driver",
-        		"src/test/resources/drivers/chromedriver.exe");
-        driver = new ChromeDriver();
-        
-        // timeouts
-        driver.manage().timeouts().pageLoadTimeout(2, TimeUnit.SECONDS);
-        driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
-    }
+	@BeforeClass
+	public static void initialise() {
 
-    @Test
-    public void createUser(){
-        LOGGER.warning("Connecting to The Demo Site....");
+		LOGGER.setLevel(Level.ALL);
 
-        // STAGE 1 - navigate to site.
-        // ========================================
-            // I want to navigate to....
-        	driver.get("http://thedemosite.co.uk/");
-        	
-        // STAGE 2 - create a user.
-        // ========================================
-            LOGGER.info("Creating a new user...\n");
-            // Navigate to add user page
-            targ = driver.findElement(By.xpath("/html/body/div/center/table/tbody/tr[2]/td/div/center/table/tbody/tr/td[2]/p/small/a[3]"));
-            targ.click();
-            
-            // Fill details out
-            targ = driver.findElement(By.name("username"));
-        	targ.sendKeys("root");
-        	targ = driver.findElement(By.name("password"));
-        	targ.sendKeys("root");
-        	
-        	// Submit user
-        	targ = driver.findElement(By.xpath("/html/body/table/tbody/tr/td[1]/form/div/center/table/tbody/tr/td[1]/div/center/table/tbody/tr[3]/td[2]/p/input"));
-        	targ.click();
+		System.setProperty("webdriver.chrome.driver", "src/test/resources/drivers/chromedriver.exe");
+		driver = new ChromeDriver();
 
-        // STAGE 3 - Log in as created user.
-        // ========================================
-            LOGGER.info("Logging in as created user...\n");        	
-            // Navigate to login
-            targ = driver.findElement(By.xpath("/html/body/div/center/table/tbody/tr[2]/td/div/center/table/tbody/tr/td[2]/p/small/a[4]"));
-            targ.click();
-            
-            targ = driver.findElement(By.name("username"));
-        	targ.sendKeys("root");
-        	targ = driver.findElement(By.name("password"));
-        	targ.sendKeys("root");
-        	
-        	// Login user
-        	targ = driver.findElement(By.xpath("/html/body/table/tbody/tr/td[1]/form/div/center/table/tbody/tr/td[1]/table/tbody/tr[3]/td[2]/p/input"));
-        	targ.click();
-        	
-        // STAGE 4 - check success.
-        // ========================================
-            LOGGER.info("Checking success of automated test...\n");
-            
-            targ = driver.findElement(By.xpath("/html/body/table/tbody/tr/td[1]/big/blockquote/blockquote/font/center/b"));
+		// timeouts
+		driver.manage().timeouts().pageLoadTimeout(2, TimeUnit.SECONDS);
+		driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
+	}
 
-            String status = targ.getText();
-             
-            // Assert success
-            assertEquals("**Successful Login**", status);
-    }
+	@Test
+	public void createUser() {
+		LOGGER.warning("Connecting to The Demo Site....");
 
+		DemoSiteHomePage website = PageFactory.initElements(driver, DemoSiteHomePage.class);
 
-    @AfterClass
-    public static void tearDown() {
-        LOGGER.warning("Closing webdriver instance!");
+		LOGGER.info("Creating a new user...\n");
+		website.navAddUser();
+		website.addUsers_Page.signUp("root", "root");
+		
+		LOGGER.info("Logging in as created user...\n");
+		website.navLogin();
+		website.login_Page.login("root", "root");
 
-        driver.quit();
+		LOGGER.info("Checking success of automated test...\n");
+		String status = website.login_Page.getStatus();
 
-        LOGGER.info("!!! Webdriver closed successfully !!!");
-    }
+		// Assert success
+		assertEquals("**Successful Login**", status);
+	}
+
+	@AfterClass
+	public static void tearDown() {
+		LOGGER.warning("Closing webdriver instance!");
+
+		driver.quit();
+
+		LOGGER.info("!!! Webdriver closed successfully !!!");
+	}
 }
