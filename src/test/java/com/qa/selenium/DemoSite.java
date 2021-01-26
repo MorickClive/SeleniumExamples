@@ -37,18 +37,25 @@ public class DemoSite {
 
 	@Test
 	public void createUser() {
+		// STAGE 1 - GIVEN I can navigate to site.
+        // ========================================
 		LOGGER.warning("Connecting to The Demo Site....");
-
 		DemoSiteHomePage website = PageFactory.initElements(driver, DemoSiteHomePage.class);
 
+        // STAGE 2 - WHEN I create a user.
+        // ========================================
 		LOGGER.info("Creating a new user...\n");
 		website.navAddUser();
 		website.addUsers_Page.signUp("root", "root");
-		
+
+        // STAGE 3 - AND I Log in as created user.
+        // ========================================
 		LOGGER.info("Logging in as created user...\n");
 		website.navLogin();
 		website.login_Page.login("root", "root");
 
+        // STAGE 4 - THEN check I've successfully logged in.
+        // ========================================
 		LOGGER.info("Checking success of automated test...\n");
 		String status = website.login_Page.getStatus();
 
